@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../add_task/data/task_model.dart';
+import '../../add_task/task_constants.dart';
 
 class TaskCard extends StatelessWidget {
   final TaskModel task;
@@ -14,27 +16,19 @@ class TaskCard extends StatelessWidget {
     required this.onDelete,
   });
 
-  Color get statusColor {
-    switch (task.status) {
-      case 'Done':
-        return const Color(0xFF4CAF50);
-      case 'In Progress':
-        return const Color(0xFFFF9800);
-      default:
-        return const Color(0xFF2196F3);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final color = statusColor(task.status);
+    final isRtl = Directionality.of(context) == TextDirection.RTL;
+
     return Dismissible(
       key: ValueKey(task.key),
       direction: DismissDirection.endToStart,
       onDismissed: (_) => onDelete(),
       background: Container(
         margin: EdgeInsets.only(bottom: 12.h),
-        padding: EdgeInsets.only(right: 20.w),
-        alignment: Alignment.centerRight,
+        padding: EdgeInsetsDirectional.only(end: 20.w),
+        alignment: AlignmentDirectional.centerEnd,
         decoration: BoxDecoration(
           color: Colors.red,
           borderRadius: BorderRadius.circular(20),
@@ -52,7 +46,7 @@ class TaskCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -80,14 +74,18 @@ class TaskCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 4.h),
-                    Text(
-                      task.subtitle,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey.shade600,
+                    if (task.subtitle.isNotEmpty) ...[
+                      SizedBox(height: 4.h),
+                      Text(
+                        task.subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.grey.shade600,
+                        ),
                       ),
-                    ),
+                    ],
                     SizedBox(height: 8.h),
                     Container(
                       padding: EdgeInsets.symmetric(
@@ -95,22 +93,22 @@ class TaskCard extends StatelessWidget {
                         vertical: 4.h,
                       ),
                       decoration: BoxDecoration(
-                        color: statusColor.withOpacity(0.15),
+                        color: color.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        task.status,
+                        statusKey(task.status).tr(),
                         style: TextStyle(
                           fontSize: 11.sp,
                           fontWeight: FontWeight.bold,
-                          color: statusColor,
+                          color: color,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right),
+              Icon(isRtl ? Icons.chevron_left : Icons.chevron_right),
             ],
           ),
         ),

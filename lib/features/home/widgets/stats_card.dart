@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -25,10 +26,7 @@ class StatsCard extends StatelessWidget {
           ),
         ),
         SizedBox(height: 4.h),
-        Text(
-          label,
-          style: TextStyle(color: Colors.white70, fontSize: 12.sp),
-        ),
+        Text(label, style: TextStyle(color: Colors.white70, fontSize: 12.sp)),
       ],
     );
   }
@@ -45,9 +43,9 @@ class StatsCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          item('$total', 'Tasks'),
-          item('$done', 'Done'),
-          item('$pending', 'Pending'),
+          item('$total', 'tasks'.tr()),
+          item('$done', 'done'.tr()),
+          item('$pending', 'pending'.tr()),
         ],
       ),
     );

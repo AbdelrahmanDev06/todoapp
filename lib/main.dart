@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/core/utils/app_constatns.dart';
 import 'package:flutter_application_1/features/add_task/data/task_model.dart';
 import 'package:flutter_application_1/features/login/data/user_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -12,7 +13,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(UserModelAdapter());
   Hive.registerAdapter(TaskModelAdapter());
-  await Hive.openBox<UserModel>('userBox');
+  await Hive.openBox<UserModel>(AppConstants.userBoxName);
   await Hive.openBox<TaskModel>('tasks');
 
   runApp(
